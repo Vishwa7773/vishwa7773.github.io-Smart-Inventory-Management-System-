@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Inventory & Billing System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="topbar">
+    <div class="container">
+        <h1>Inventory & Billing System</h1>
+        <p>Smart Product • Inventory • Billing Management</p>
+    </div>
+</header>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="container">
+        <a href="/">Home</a>
+        <a href="/products">Products</a>
+        <a href="/inventory">Inventory</a>
+        <a href="/billing">Billing</a>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    © 2026 Inventory System | PostgreSQL Powered
+</footer>
+
+</body>
+</html>
