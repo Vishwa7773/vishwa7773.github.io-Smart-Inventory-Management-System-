@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Inventory Management</h2>
+
+    <!-- Add Inventory Form -->
+    <form method="POST" action="/add_inventory" class="form">
+        <div class="form-group">
+            <label>Product</label>
+            <select name="product_id" required>
+                {% for p in products %}
+                <option value="{{ p.id }}">{{ p.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Batch Number</label>
+            <input type="text" name="batch_no" placeholder="Batch No" required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+        </div>
+
+        <button type="submit" class="btn">Add Inventory</button>
+    </form>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Current Inventory</h3>
+
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Batch No</th>
+            <th>Quantity</th>
+        </tr>
+
+        {% for i in inventory %}
+        <tr>
+            <td>{{ i.product.name }}</td>
+            <td>{{ i.batch_no }}</td>
+            <td>{{ i.quantity }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="3" style="text-align:center;">No inventory records found</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
