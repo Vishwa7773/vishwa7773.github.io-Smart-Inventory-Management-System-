@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Create Bill</h2>
+
+    <form id="billForm">
+
+        <label>Customer</label>
+        <select id="customer" required>
+            {% for c in customers %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Price (₹)</th>
+                <th>Qty</th>
+            </tr>
+
+            {% for p in products %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.price }}</td>
+                <td>
+                    <input type="number" min="0" value="0"
+                           data-id="{{ p.id }}"
+                           data-price="{{ p.price }}">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit" class="btn">Generate Bill</button>
+    </form>
+</div>
+
+<hr>
+
+<div class="card">
+    <h3>Add New Customer</h3>
+    <form method="POST" action="/add_customer">
+        <input type="text" name="name" placeholder="Customer Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <button type="submit" class="btn">Add Customer</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('billForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    let items = [];
+    document.querySelectorAll("input[type='number']").forEach(input => {
+        if (input.value > 0) {
+            items.push({
+                product_id: input.dataset.id,
+                qty: parseInt(input.value),
+                price: parseFloat(input.dataset.price)
+            });
+        }
+    });
+
+    if (items.length === 0) {
+        alert("Please select at least one product.");
+        return;
+    }
+
+    const response = await fetch('/generate_bill', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            customer_id: document.getElementById('customer').value,
+            items: items
+        })
+    });
+
+    const result = await response.json();
+
+    if (result.error) {
+        alert("Error: " + result.error);
+    } else {
+        window.location.href = `/invoice/${result.bill_id}`;
+    }
+});
+</script>
+
+{% endblock %}
