@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block content %}
+
+<div class="invoice-card">
+
+    <div class="invoice-header">
+        <div>
+            <h2>Tantrata Solutions Pvt Ltd</h2>
+            <p class="muted">GSTIN: 27ABCDE1234F1Z5</p>
+            <p class="muted">Pune, Maharashtra</p>
+        </div>
+
+        <div class="invoice-meta">
+            <p><strong>Invoice #:</strong> {{ bill.id }}</p>
+            <p><strong>Date:</strong> {{ bill.created_at.strftime('%d-%m-%Y') }}</p>
+        </div>
+    </div>
+
+    <div class="customer-info">
+        <h4>Billed To</h4>
+        <p>{{ customer.name }}</p>
+        <p class="muted">{{ customer.phone }}</p>
+    </div>
+
+    <table class="invoice-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price (₹)</th>
+                <th>Total (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in bill_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.quantity * item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="invoice-summary">
+        <div class="summary-box">
+            <p>Subtotal</p>
+            <p>Tax (18%)</p>
+            <p>Discount</p>
+            <hr>
+            <h3>Grand Total</h3>
+        </div>
+
+        <div class="summary-box right">
+            <p>₹{{ bill.total_amount + bill.discount - bill.tax }}</p>
+            <p>₹{{ bill.tax }}</p>
+            <p>- ₹{{ bill.discount }}</p>
+            <hr>
+            <h3>₹{{ bill.total_amount }}</h3>
+        </div>
+    </div>
+
+    <div class="invoice-footer">
+        <p>Thank you for your business 🙏</p>
+        <button onclick="window.print()" class="btn">Print Invoice</button>
+    </div>
+
+</div>
+
+{% endblock %}
