@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Product Management</h2>
+
+    <!-- Add Product Form -->
+    <form method="POST" action="/add_product" class="form">
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" name="name" placeholder="Enter product name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" name="price" step="0.01" placeholder="Enter price" required>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" placeholder="Optional description"></textarea>
+        </div>
+
+        <button type="submit" class="btn">Add Product</button>
+    </form>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Product List</h3>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price (₹)</th>
+        </tr>
+
+        {% for p in products %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.price }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2" style="text-align:center;">No products added yet</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
